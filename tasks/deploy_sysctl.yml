@@ -1,7 +1,7 @@
 ---
 - name: sysctl | Set sysctl values
   sysctl:
-    ignoreerrors: "no"
+    ignoreerrors: "{{ hostvars[inventory_hostname]['sysctl'] | json_query(\"[?file=='\" + vars['outer_item'] + \"'] | map(&ignore_errors || 'no', @)\") | join() }}"
     reload: "yes"
     state: "present"
     sysctl_file: "{{ hostvars[inventory_hostname]['sysctl_dest'] + '/' + vars['outer_item'] + '.conf' }}"

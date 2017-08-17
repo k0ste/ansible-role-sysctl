@@ -18,6 +18,8 @@ Example configuration
 sysctl:
 # This file will be saved on `sysctl.d`.
 - file: '99-linux'
+# Use this option to ignore errors about unknown keys. Default is 'no'.
+  ignore_errors: 'no'
   options:
   - name: 'kernel.panic'
     value: '0'
