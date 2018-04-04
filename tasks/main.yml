@@ -1,5 +1,5 @@
 ---
-- include: pre_requisite.yml
-- include: sysctl_executor.yml
+- include_tasks: pre_requisite.yml
+- include_tasks: sysctl_executor.yml
   when:
   - "vars['sysctl_files'] is defined"

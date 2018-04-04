@@ -1,12 +1,17 @@
 ---
 - name: sysctl | Set sysctl values
   sysctl:
-    ignoreerrors: "{{ hostvars[inventory_hostname]['sysctl'] | json_query(\"[?file=='\" + vars['outer_item'] + \"'] | map(&ignore_errors || 'no', @)\") | join() }}"
+    ignoreerrors: "{{ hostvars[inventory_hostname]['sysctl'] |
+                      json_query(\"[?file=='\" + vars['outer_item'] + \"'] |
+                      map(&ignore_errors || 'no', @)\") | join() }}"
+    name: "{{ item.name }}"
     reload: "yes"
     state: "present"
-    sysctl_file: "{{ hostvars[inventory_hostname]['sysctl_dest'] + '/' + vars['outer_item'] + '.conf' }}"
-    name: "{{ item.name }}"
-    value: "{{ item.value }}"
-  with_items: "{{ hostvars[inventory_hostname]['sysctl'] | json_query(\"[?file=='\" + vars['outer_item'] + \"'].options\") }}"
+    sysctl_file: "{{ hostvars[inventory_hostname]['sysctl_dest'] ~ '/' ~
+                     vars['outer_item'] ~ '.conf' }}"
+
+    value: "{{ item.value | default(omit) }}"
+  with_items: "{{ hostvars[inventory_hostname]['sysctl'] |
+    json_query(\"[?file=='\" + vars['outer_item'] + \"'].options\") }}"
   loop_control:
     label: "{{ item.name }}"

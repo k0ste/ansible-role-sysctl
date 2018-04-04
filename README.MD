@@ -1,17 +1,13 @@
-sysctl
-========
+# ansible-sysctl
 
 sysctl - role for configure kernel parameters at runtime and set at boot
 (persist parameters).
 
-Requirements for usage
--------------------------
+## Requirements for usage
 
-* Ansible 2.2;
-* jmespath;
+* Ansible 2.4;
 
-Example configuration
--------------------------
+## Example configuration
 
 ```yaml
 ---

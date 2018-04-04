@@ -1,9 +1,11 @@
 ---
 - name: sysctl | Add the OS specific variables
-  include_vars: "{{ hostvars[inventory_hostname]['ansible_os_family'] + '.yml' }}"
+  include_vars: "{{ hostvars[inventory_hostname]['ansible_os_family'] +
+                    '.yml' }}"
 - name: sysctl | Set facts about sysctl files
   set_fact:
-    sysctl_files: "{{ hostvars[inventory_hostname]['sysctl'] | json_query('[].file') }}"
+    sysctl_files: "{{ hostvars[inventory_hostname]['sysctl'] |
+                      json_query('[].file') }}"
   when:
   - "hostvars[inventory_hostname]['sysctl'] is defined"
   - "hostvars[inventory_hostname]['sysctl'] != ''"
