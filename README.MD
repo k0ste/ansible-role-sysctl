@@ -5,7 +5,7 @@ sysctl - role for configure kernel parameters at runtime and set at boot
 
 ## Requirements for usage
 
-* Ansible 2.4;
+* Ansible 2.5+;
 
 ## Example configuration
 

@@ -2,16 +2,16 @@
 - name: sysctl | Set sysctl values
   sysctl:
     ignoreerrors: "{{ hostvars[inventory_hostname]['sysctl'] |
-                      json_query(\"[?file=='\" + vars['outer_item'] + \"'] |
-                      map(&ignore_errors || 'no', @)\") | join() }}"
+      json_query(\"[?file=='\" + vars['outer_item'] + \"'] |
+      map(&ignore_errors || 'no', @)\") | join() }}"
     name: "{{ item.name }}"
     reload: "yes"
     state: "present"
     sysctl_file: "{{ hostvars[inventory_hostname]['sysctl_dest'] ~ '/' ~
-                     vars['outer_item'] ~ '.conf' }}"
-
+      vars['outer_item'] ~ '.conf' }}"
     value: "{{ item.value | default(omit) }}"
-  with_items: "{{ hostvars[inventory_hostname]['sysctl'] |
-    json_query(\"[?file=='\" + vars['outer_item'] + \"'].options\") }}"
+  loop: "{{ hostvars[inventory_hostname]['sysctl'] |
+    json_query(\"[?file=='\" + vars['outer_item'] + \"'].options\") |
+    flatten(levels=1) }}"
   loop_control:
     label: "{{ item.name }}"
