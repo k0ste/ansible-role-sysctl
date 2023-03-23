@@ -1,11 +1,14 @@
 ---
-- name: sysctl | Add the OS specific variables
-  include_vars: "{{ hostvars[inventory_hostname]['ansible_os_family'] +
-                    '.yml' }}"
-- name: sysctl | Set facts about sysctl files
-  set_fact:
+- name: "sysctl | Assert that ansible facts gathered successfully"
+  ansible.builtin.assert:
+    that:
+      - "hostvars[inventory_hostname]['ansible_os_family'] is defined"
+    msg: "'ansible_facts' not found. Please enable facts gathering"
+    quiet: "true"
+- name: "sysctl | Add the OS specific varibles"
+  ansible.builtin.include_vars:
+    file: "{{ hostvars[inventory_hostname]['ansible_os_family'] + '.yml' }}"
+- name: "sysctl | Set facts about sysctl files"
+  ansible.builtin.set_fact:
     sysctl_files: "{{ hostvars[inventory_hostname]['sysctl'] |
-                      json_query('[].file') }}"
-  when:
-  - "hostvars[inventory_hostname]['sysctl'] is defined"
-  - "hostvars[inventory_hostname]['sysctl'] != ''"
+      community.general.json_query('[].file') }}"
