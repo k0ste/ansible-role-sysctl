@@ -1,9 +1,11 @@
 ---
-- ansible.builtin.import_tasks:
+- name: "sysctl | Include pre requisite tasks"
+  ansible.builtin.import_tasks:
     file: "pre_requisite.yml"
-- ansible.builtin.include_tasks:
+- name: "sysctl | Include sysctl execution tasks"
+  ansible.builtin.include_tasks:
     file: "sysctl_executor.yml"
   when:
-   - "vars['sysctl_files'] is defined"
-   - "vars['sysctl_files'] != []"
-   - "vars['sysctl_files'] != ''"
+    - "vars['sysctl_files'] is defined"
+    - "vars['sysctl_files'] != []"
+    - "vars['sysctl_files'] != ''"
