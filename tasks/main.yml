@@ -9,3 +9,4 @@
     - "vars['sysctl_files'] is defined"
     - "vars['sysctl_files'] != []"
     - "vars['sysctl_files'] != ''"
+    - "vars['sysctl_files'] != None"

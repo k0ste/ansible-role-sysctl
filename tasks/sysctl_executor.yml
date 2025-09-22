@@ -1,5 +1,4 @@
 ---
-
 - name: "sysctl | Include sysctl deployment tasks"
   ansible.builtin.include_tasks:
     file: "deploy_sysctl.yml"

@@ -3,15 +3,16 @@
   ansible.posix.sysctl:
     ignoreerrors: "{{ hostvars[inventory_hostname]['sysctl'] |
       community.general.json_query(\"[?file=='\" + vars['outer_item'] + \"'] |
-      map(&ignore_errors || 'no', @) | [0]\")}}"
-    name: "{{ item['name'] }}"
+      map(&ignore_errors || 'no', @) | [0]\") }}"
+    name: "{{ sysctl_item['name'] }}"
     reload: "yes"
     state: "present"
     sysctl_file: "{{ hostvars[inventory_hostname]['sysctl_dest'] + '/' ~
       vars['outer_item'] ~ '.conf' }}"
-    value: "{{ item['value'] | default(omit) }}"
+    value: "{{ sysctl_item['value'] | default(omit) }}"
   loop: "{{ hostvars[inventory_hostname]['sysctl'] |
     community.general.json_query(\"[?file=='\" + vars['outer_item'] +
     \"'].options\") | flatten(levels=1) }}"
   loop_control:
-    label: "{{ vars['outer_item'] + '.conf | ' + item['name'] }}"
+    label: "{{ vars['outer_item'] + '.conf | ' + sysctl_item['name'] }}"
+    loop_var: "sysctl_item"
